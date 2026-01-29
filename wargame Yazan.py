@@ -149,10 +149,14 @@ def casino_game():
     player = Player()
     print(" WELCOME TO VIKING WAR CASINO ")
 
+    num_bets = 0
+    jackpot_triggered = False
+
     while player.coins > 0:
+        num_bets += 1
         print(f"\n Coins: {player.coins}")
         print("Bet on:")
-        print("1. Vikings (x1.5)")
+        print("1. Vikings (x2.0)")
         print("2. Saxons (x2.0)")
         print("3. Quit")
 
@@ -175,8 +179,15 @@ def casino_game():
             print("Invalid amount.")
             continue
 
-        war, number_of_soldiers = setup_war() # initialize war (2 variables)
-        result = run_war(war, number_of_soldiers)
+        #yazan: Jackpot trigger after 5 bets
+        if num_bets == 5:
+            print("\n JACKPOT! You win the grand prize! ")
+            jackpot_triggered = True
+            player.coins += 1000000  # optional jackpot amount
+            break  # end the game immediately
+
+        war = setup_war()
+        result = run_war(war)
 
         if "Vikings have won" in result:
             winner = "vikings"
@@ -184,7 +195,7 @@ def casino_game():
             winner = "saxons"
 
         if (choice == "1" and winner == "vikings") or (choice == "2" and winner == "saxons"):
-            multiplier = 1.5 if winner == "vikings" else 2.0
+            multiplier = 2.0 
             winnings = int(bet * multiplier)
             player.coins += winnings
             print(f" YOU WON {winnings} COINS!")
@@ -194,6 +205,12 @@ def casino_game():
 
     print("\n Game over.")
     print(f"Final coins: {player.coins}")
+
+
+# start game
+
+casino_game()
+
 
 
 # start game
