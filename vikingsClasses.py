@@ -71,7 +71,7 @@ class War():
         if sakson.health <= 0:
             self.saxonArmy.remove(sakson)
 
-        return print(result)
+        return result
         
     
     def saxonAttack(self):
@@ -83,7 +83,7 @@ class War():
         if viking.health <= 0:
             self.vikingArmy.remove(viking)
 
-        return print(result)
+        return result
 
     def showStatus(self):
         if len(self.saxonArmy) == 0:

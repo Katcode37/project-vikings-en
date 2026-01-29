@@ -18,9 +18,12 @@ for i in range(0,5):
     if i:
         great_war.addSaxon(Saxon(100,random.randint(0,100)))
     
-round = 0
+round = 1
 while len(great_war.saxonArmy) > 0 and len(great_war.vikingArmy) > 0:
     great_war.vikingAttack()
+    if len(great_war.saxonArmy) == 0:
+        print(great_war.showStatus())
+        break
     great_war.saxonAttack()
     print(f"round: {round} // Viking army: {len(great_war.vikingArmy)} warriors",f"and Saxon army: {len(great_war.saxonArmy)} warriors")
     print(great_war.showStatus())
