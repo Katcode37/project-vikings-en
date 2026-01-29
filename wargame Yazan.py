@@ -12,7 +12,7 @@ class Player:
 
 # setup war 
 def setup_war():
-    names = [
+    soldier_names = [
     "Ragnar", "Bjorn", "Ivar", "Ubbe", "Halfdan",
     "Harald", "Leif", "Erik", "Sigurd", "Hakon",
     "Floki", "Torsten", "Sven", "Olaf", "Knut",
@@ -41,22 +41,59 @@ def setup_war():
         except:
             print("Cut the retarded mode and enter a real number")
 
-    for i in range(number_of_soldiers):
-        war.addViking(
-            Viking(
-                random.choice(names),
-                100,
-                random.randint(30, 80)
-            )
-        )
+    while True: # Ask user if they wish to randomize health values
+        try:
+            random_health_answer = input('Would you like to randomize health values? By default soldiers are of high health. Yes/No?')
+            if random_health_answer.lower() == 'yes':
+                random_health = True
+            elif random_health_answer.lower() == 'no':
+                random_health = False
+            break
+        except:
+            print('But first tell us, do you want magically healthy soldiers or we make it real?') # Error handling 
 
-    for i in range(number_of_soldiers):
-        war.addSaxon(
-            Saxon(
+
+#account for a random health option
+    if random_health == True:
+        for i in range(number_of_soldiers):
+            war.addViking(
+                Viking(
+                    random.choice(soldier_names),
+                    100,
+                    random.randint(30, 80)
+                    )
+            )
+
+        for i in range(number_of_soldiers):
+            war.addSaxon(
+                Saxon(
+                    100,
+                    random.randint(30, 80)
+                )
+            )
+
+    else:
+        for soldier in soldier_names:
+            for i in range(number_of_soldiers):
+                war.addViking(
+                    Viking(
+                random.choice(soldier_names),
                 100,
                 random.randint(30, 80)
-            )
-        )
+                )
+                )
+
+        for i in range(number_of_soldiers):
+                war.addSaxon(
+                Saxon(
+                100,
+                random.randint(30, 80)
+                )
+                )
+  
+
+
+
 
     return war, number_of_soldiers
 
