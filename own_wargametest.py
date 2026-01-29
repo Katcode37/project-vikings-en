@@ -24,13 +24,27 @@ while True: # Ask user for number of soldiers to spawn
     except:
         print('Odin will not tollarate data type confusion. Enter an intager or pray for yoyr life!') # Error handling for non-integer input
 
+while True: # Ask user if they wish to randomize health values
+    try:
+        random_health_answer = input('Would you like to randomize health values? By default soldiers are of high health. Yes/No?')
+        if random_health_answer.lower() == 'yes':
+            random_health = True
+        elif random_health_answer.lower() == 'no':
+            random_health = False
+        break
+    except:
+        print('But first tell us, do you want magically healthy soldiers or we make it real?') # Error handling 
 
 new_war = War()
-
-for soldier in soldier_names:
-
-    new_war.addViking(Viking(soldier, 100, random.randint(1, 100))) # Add a Viking with random strength & name
-    new_war.addSaxon(Saxon(100, random.randint(1, 100))) # Add a Saxon with random strength
+#account for a random health option
+if random_health == True:
+    for soldier in soldier_names:
+        new_war.addViking(Viking(soldier, random.randint(20, 100), random.randint(1, 100))) # Add a Viking with random strength & health
+        new_war.addSaxon(Saxon(random.randint(20, 100), random.randint(1, 100))) # Add a Saxon with random strength & health
+else:
+    for soldier in soldier_names:
+        new_war.addViking(Viking(soldier, 100, random.randint(1, 100))) # Add a Viking with random strength & name
+        new_war.addSaxon(Saxon(100, random.randint(1, 100))) # Add a Saxon with random strength
   
 
 vikings_total_health = 0
