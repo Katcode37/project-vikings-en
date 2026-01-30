@@ -2,7 +2,6 @@ import random
 
 # Soldier
 
-
 class Soldier:
     def __init__(self, health, strength):
         self.health = health
@@ -35,19 +34,21 @@ class Viking(Soldier):
             return f"{self.name} has died in act of combat"
 
 # Saxon
-
+# Raya added name to Saxons
 class Saxon(Soldier):
-    def __init__(self, health, strength):
+    def __init__(self, name, health, strength):
+        self.name = name
         super().__init__(health, strength)
+        
 
     # attack inhereted automatically
 
     def receiveDamage(self, damage):
         self.health -= damage
         if self.health > 0:
-            return f"A Saxon has received {damage} points of damage"
+            return f"{self.name} has received {damage} points of damage" # updated with name
         else:
-            return f"A Saxon has died in combat"
+            return f"{self.name} has died in combat"
 
 # WAAAAAAAAAGH
 
