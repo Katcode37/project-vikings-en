@@ -1,6 +1,34 @@
 import random
 import time
 from vikingsClasses import Viking, Saxon, War
+import winsound
+
+def play_background_music():
+    winsound.PlaySound(
+        "vikings_at_shore.wav",
+        winsound.SND_FILENAME | winsound.SND_ASYNC | winsound.SND_LOOP
+    ) # background music
+
+
+def play_battle_sound():
+    winsound.PlaySound(
+        "something_approaches.wav",
+        winsound.SND_FILENAME | winsound.SND_ASYNC
+    ) # battle sound effect
+
+def victory_sound():
+    winsound.PlaySound(
+        "victory_sound.wav",
+        winsound.SND_FILENAME | winsound.SND_ASYNC
+    ) # victory sound effect
+
+def loss_sound():
+    winsound.PlaySound(
+        "loss_sound.wav",
+        winsound.SND_FILENAME | winsound.SND_ASYNC
+    ) # defeat sound effect
+
+play_background_music()
 
 
 # player
@@ -77,6 +105,7 @@ def setup_war():
 
 # run war
 def run_war(war, number_of_soldiers):
+    play_battle_sound()
     round_num = 1
     print("\nThe war begins!\n")
 
@@ -107,6 +136,7 @@ def run_war(war, number_of_soldiers):
     vikings_leftover_health = sum(v.health for v in war.vikingArmy)
     saxons_leftover_health = sum(s.health for s in war.saxonArmy)
 
+    victory_sound()
     print("WAR OVER")
     status = war.showStatus()
     print(status)
@@ -117,12 +147,21 @@ def run_war(war, number_of_soldiers):
 
     print(f"Vikings have dealt total damage of {saxons_total_health - saxons_leftover_health} and killed {killed_saxons} saxons")
     print(f"Saxons have dealt total damage of {viking_total_health - vikings_leftover_health} and killed {killed_vikings} vikings")
+    
+    if (choice == "1" and "Vikings" in status) or (choice == "2" and "Saxons" in status):
+        victory_sound()
+    else:
+        loss_sound()
+    time.sleep(8)  # wait for victory or loss  sound to finish
+    play_background_music()
+    
 
     return status
 
 
 # casino game
 def casino_game():
+    
     player = Player()
     print("WELCOME TO VIKING WAR CASINO")
 
@@ -135,7 +174,8 @@ def casino_game():
         print("2. Saxons (x2.0)")
         print("3. Quit")
 
-        choice = input("> ").strip()
+        global choice
+        choice = input("Your choice > ")
 
         if choice == "3":
             break
