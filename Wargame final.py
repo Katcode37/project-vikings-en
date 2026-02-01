@@ -1,6 +1,50 @@
 import random
 import time
 from vikingsClasses import Viking, Saxon, War
+import winsound
+import os
+
+
+# sounds functions
+
+base = os.path.dirname(__file__) # get the directory of the current script
+
+def play_background_music():
+    sound_path = os.path.join(base, "vikings_at_shore.wav") # construct the full path to the sound file
+    winsound.PlaySound(
+        sound_path,
+        winsound.SND_FILENAME | winsound.SND_ASYNC | winsound.SND_LOOP
+    ) # background music
+
+
+def play_battle_sound():
+    sound_path = os.path.join(base, "something_approaches.wav") 
+    winsound.PlaySound(
+        sound_path,
+        winsound.SND_FILENAME | winsound.SND_ASYNC
+    ) # battle sound effect
+
+def victory_sound():
+    sound_path = os.path.join(base, "victory_sound.wav")
+    winsound.PlaySound(
+        sound_path,
+        winsound.SND_FILENAME | winsound.SND_ASYNC
+    ) # victory sound effect
+
+def loss_sound():
+    sound_path = os.path.join(base, "loss_sound.wav")
+    winsound.PlaySound(
+        sound_path,
+        winsound.SND_FILENAME | winsound.SND_ASYNC
+    ) # defeat sound effect
+
+def jackpot_sound():
+    sound_path = os.path.join(base, "jackpot.wav")
+    winsound.PlaySound(
+        sound_path,
+        winsound.SND_FILENAME
+    ) # jackpot sound effect
+
 
 
 # player
@@ -206,6 +250,7 @@ ascii_art = {
 
 # run war
 def run_war(war, number_of_soldiers):
+    play_battle_sound()
     round_num = 1
     print("\nThe war begins!\n")
     print(ascii_art["war_begins"])
@@ -231,11 +276,11 @@ def run_war(war, number_of_soldiers):
 
         if war.saxonArmy:
             print(war.vikingAttack())
-            time.sleep(0.5)
+            time.sleep(1.5)
 
         if war.vikingArmy and war.saxonArmy:
             print(war.saxonAttack())
-            time.sleep(0.5)
+            time.sleep(1.5)
 
         print(f"Vikings: {len(war.vikingArmy)} | Saxons: {len(war.saxonArmy)}\n")
         round_num += 1
@@ -244,7 +289,7 @@ def run_war(war, number_of_soldiers):
             fact = fact_deck.pop()   # REMOVE fact so it can't repeat
             print(f"\n📜 FUN FACT: {fact}\n")
             facts_shown += 1
-            time.sleep(0.6)
+            time.sleep(0.5)
 
     vikings_leftover_health = sum(v.health for v in war.vikingArmy)
     saxons_leftover_health = sum(s.health for s in war.saxonArmy)
@@ -263,12 +308,22 @@ def run_war(war, number_of_soldiers):
         fact = fact_deck.pop()
         print(f"\n📜 FUN FACT: {fact}\n")
         facts_shown += 1
-        time.sleep(0.6)
+        time.sleep(0.5)
+    
+    if (choice == "1" and "Vikings" in status) or (choice == "2" and "Saxons" in status):
+        victory_sound()
+    else:
+        loss_sound()
+    time.sleep(8)  # wait for victory or loss  sound to finish
+    play_background_music()
+
+    play_background_music()
     return status
 
 
 # casino game
 def casino_game():
+    
     player = Player()
     # remember starting coins so we only show the trophy if the player finished ahead
     starting_coins = player.coins
@@ -283,6 +338,7 @@ def casino_game():
         print("2. Saxons (x2.0)")
         print("3. Quit")
 
+        global choice
         choice = input("> ").strip()
 
         if choice == "3":
@@ -312,6 +368,7 @@ def casino_game():
             # If jackpot is hit, end the casino immediately and don't show
             # the regular end-game trophy or 'game over' flow.
             print(f"\nFinal coins: {player.coins}")
+            jackpot_sound()
             return
 
         war, number_of_soldiers = setup_war()
@@ -339,5 +396,6 @@ def casino_game():
 
 
 if __name__ == "__main__":
+    play_background_music()
     casino_game()
 
